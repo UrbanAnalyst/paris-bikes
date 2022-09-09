@@ -3,6 +3,11 @@ Title: What the Package Does
 Version: 0.0.1
 Authors@R: person("Mark", "Padgham", role = c("aut", "cre"), email = "mark.padgham@email.com")
 Description: What the package does (one paragraph).
+Depends:
+    R (>= 4.1)
+Imports:
+    cli,
+    osmdata
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.1
