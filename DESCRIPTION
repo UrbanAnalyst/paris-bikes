@@ -1,6 +1,6 @@
 Package: parisbikes
 Title: What the Package Does
-Version: 0.0.1.001
+Version: 0.0.1.002
 Authors@R: person("Mark", "Padgham", role = c("aut", "cre"), email = "mark.padgham@email.com")
 Description: What the package does (one paragraph).
 Depends:

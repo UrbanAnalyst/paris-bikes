@@ -4,15 +4,16 @@
 \alias{pb_centrality}
 \title{Calculate centrality on a street network for a specified mode of travel}
 \usage{
-pb_centrality(network, elev_file, mode = "bicycle", estimate = TRUE)
+pb_centrality(network, elev_file = NULL, mode = "bicycle", estimate = TRUE)
 }
 \arguments{
 \item{network}{Full path to file produced by \link{pb_get_network} function,
 as an Open Street Map network in 'silicate' (SC) format.}
 
-\item{elev_file}{Local path to a 'geotiff' file of elevation data covering
-the geographical area of the network, and downloaded as explained in the
-\pkg{osmdata} function 'osm_elevation'.}
+\item{elev_file}{Optional local path to a 'geotiff' file of elevation data
+covering the geographical area of the network, and downloaded as explained in
+the \pkg{osmdata} function 'osm_elevation'. If available, centrality
+calculations will then also take incline into account.}
 
 \item{mode}{One of "foot", "bicycle", "moped", "motorcycle", or "motorcar"}
 

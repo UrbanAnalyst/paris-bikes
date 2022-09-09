@@ -3,9 +3,10 @@
 #'
 #' @param network Full path to file produced by \link{pb_get_network} function,
 #' as an Open Street Map network in 'silicate' (SC) format.
-#' @param elev_file Local path to a 'geotiff' file of elevation data covering
-#' the geographical area of the network, and downloaded as explained in the
-#' \pkg{osmdata} function 'osm_elevation'.
+#' @param elev_file Optional local path to a 'geotiff' file of elevation data
+#' covering the geographical area of the network, and downloaded as explained in
+#' the \pkg{osmdata} function 'osm_elevation'. If available, centrality
+#' calculations will then also take incline into account.
 #' @param mode One of "foot", "bicycle", "moped", "motorcycle", or "motorcar"
 #' @param estimate If `TRUE`, calculate an initial estimate of how long the
 #' centrality calculation is likely to take.
@@ -17,7 +18,7 @@
 #' after which an interactive prompt will allow the calculation to proceed.
 #' Calculations may only be stopped by killing the R process.
 #' @export
-pb_centrality <- function (network, elev_file, mode = "bicycle", estimate = TRUE) {
+pb_centrality <- function (network, elev_file = NULL, mode = "bicycle", estimate = TRUE) {
 
     modes <- unique (dodgr::weighting_profiles$weighting_profiles$name)
     mode <- match.arg (mode, modes)
@@ -26,8 +27,10 @@ pb_centrality <- function (network, elev_file, mode = "bicycle", estimate = TRUE
     if (!file.exists (network)) {
         stop ("File [", network, "] does not exist")
     }
-    if (!file.exists (elev_file)) {
-        stop ("File [", elev_file, "] does not exist")
+    if (!is.null (elev_file)) {
+        if (!file.exists (elev_file)) {
+            stop ("File [", elev_file, "] does not exist")
+        }
     }
 
     message (cli::symbol$play, cli::col_green (" Loading network"),
@@ -35,11 +38,13 @@ pb_centrality <- function (network, elev_file, mode = "bicycle", estimate = TRUE
     dat <- readRDS (network)
     message ("\r", cli::col_green (cli::symbol$tick, " Loaded network   "))
 
-    message (cli::symbol$play, cli::col_green (" Extracting elevation data"),
-             appendLF = FALSE)
-    dat <- osmdata::osm_elevation (dat, elev_file)
-    message ("\r", cli::col_green (cli::symbol$tick,
-        " Extracted elevation data   "))
+    if (!is.null (elev_file)) {
+        message (cli::symbol$play, cli::col_green (" Extracting elevation data"),
+                 appendLF = FALSE)
+        dat <- osmdata::osm_elevation (dat, elev_file)
+        message ("\r", cli::col_green (cli::symbol$tick,
+            " Extracted elevation data   "))
+    }
 
     message (cli::symbol$play,
              cli::col_green (" Weighting street network for bicycle routing"),
