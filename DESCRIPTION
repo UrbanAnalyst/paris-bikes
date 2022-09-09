@@ -1,6 +1,6 @@
 Package: parisbikes
 Title: What the Package Does
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: person("Mark", "Padgham", role = c("aut", "cre"), email = "mark.padgham@email.com")
 Description: What the package does (one paragraph).
 License: GPL-3
