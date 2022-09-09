@@ -2,9 +2,9 @@
 % Please edit documentation in R/centrality.R
 \name{pb_centrality}
 \alias{pb_centrality}
-\title{Calculate centrality on a bicycle network}
+\title{Calculate centrality on a street network for a specified mode of travel}
 \usage{
-pb_centrality(network, elev_file, estimate = TRUE)
+pb_centrality(network, elev_file, mode = "bicycle", estimate = TRUE)
 }
 \arguments{
 \item{network}{Full path to file produced by \link{pb_get_network} function,
@@ -14,6 +14,8 @@ as an Open Street Map network in 'silicate' (SC) format.}
 the geographical area of the network, and downloaded as explained in the
 \pkg{osmdata} function 'osm_elevation'.}
 
+\item{mode}{One of "foot", "bicycle", "moped", "motorcycle", or "motorcar"}
+
 \item{estimate}{If `TRUE`, calculate an initial estimate of how long the
 centrality calculation is likely to take.}
 }
@@ -22,7 +24,7 @@ A \pkg{dodgr} 'street_network' object including a "centrality"
 column.
 }
 \description{
-Calculate centrality on a bicycle network
+Calculate centrality on a street network for a specified mode of travel
 }
 \note{
 The centrality calculation is run in parallel, and can not be

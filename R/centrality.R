@@ -1,11 +1,12 @@
 
-#' Calculate centrality on a bicycle network
+#' Calculate centrality on a street network for a specified mode of travel
 #'
 #' @param network Full path to file produced by \link{pb_get_network} function,
 #' as an Open Street Map network in 'silicate' (SC) format.
 #' @param elev_file Local path to a 'geotiff' file of elevation data covering
 #' the geographical area of the network, and downloaded as explained in the
 #' \pkg{osmdata} function 'osm_elevation'.
+#' @param mode One of "foot", "bicycle", "moped", "motorcycle", or "motorcar"
 #' @param estimate If `TRUE`, calculate an initial estimate of how long the
 #' centrality calculation is likely to take.
 #' @return A \pkg{dodgr} 'street_network' object including a "centrality"
@@ -16,7 +17,11 @@
 #' after which an interactive prompt will allow the calculation to proceed.
 #' Calculations may only be stopped by killing the R process.
 #' @export
-pb_centrality <- function (network, elev_file, estimate = TRUE) {
+pb_centrality <- function (network, elev_file, mode = "bicycle", estimate = TRUE) {
+
+    modes <- unique (dodgr::weighting_profiles$weighting_profiles$name)
+    mode <- match.arg (mode, modes)
+
 
     if (!file.exists (network)) {
         stop ("File [", network, "] does not exist")
@@ -39,7 +44,7 @@ pb_centrality <- function (network, elev_file, estimate = TRUE) {
     message (cli::symbol$play,
              cli::col_green (" Weighting street network for bicycle routing"),
              appendLF = FALSE)
-    graph <- dodgr::weight_streetnet (dat, wt_profile = "bicycle")
+    graph <- dodgr::weight_streetnet (dat, wt_profile = mode)
     px <- attr (graph, "px")
     while (px$is_alive ()) {
         px$wait ()
